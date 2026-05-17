@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>南戲選課計算機</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* 這裡額外補上一點點小徽章的樣式，讓畫面更精美 */
+    .must-badge-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+      justify-content: center;
+    }
+    .must-badge {
+      font-size: 0.75rem;
+      padding: 3px 8px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      transition: all 0.3s ease;
+    }
+    /* 未選中的低調灰暗狀態 */
+    .must-badge.missing {
+      background: rgba(255, 255, 255, 0.05);
+      color: rgba(255, 255, 255, 0.3);
+      border-color: rgba(255, 255, 255, 0.05);
+    }
+    /* 已選中的亮眼達成狀態 */
+    .must-badge.active {
+      background: rgba(16, 185, 129, 0.15);
+      color: #10b981;
+      border-color: rgba(16, 185, 129, 0.4);
+      font-weight: bold;
+      box-shadow: 0 0 8px rgba(16, 185, 129, 0.2);
+    }
+  </style>
+</head>
+<body>
+
+<div class="main-wrapper">
+  
+  <div class="left-column">
+    <div class="card">
+      <h1>✨ 請開始你的選課 ✨</h1>
+      
+      <div class="subtitle-group">
+        <p class="main-sub">基於南大戲劇 113 課程規劃</p>
+        <p class="hint-sub">選修課程每年不同<br>若當學期找不到，可至前後學期尋找ㄛ</p>
+      </div>
+
+      <div id="list-mode-section">
+        <select id="semesterSelect" onchange="updateMain()">
+          <option value="">1. 選擇類型</option>
+          <option value="教育基礎課程">教育基礎課程</option>
+          <option value="教育方法課程">教育方法課程</option>
+          <option value="教育實踐課程">教育實踐課程</option>
+          <option value="國民小學師資類科專門課程">國民小學師資類科專門課程</option>
+        </select>
+        <select id="mainSelect" onchange="updateCourse()"><option value="">2. 選擇類別</option></select>
+        <select id="courseSelect"><option value="">3. 選擇課程</option></select>
+        <button onclick="addCourse()" class="btn-add">加入課程清單</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>📚 修課明細</h2>
+      <div id="list-container" class="list-container"></div>
+    </div>
+  </div>
+
+  <div class="right-column">
+    <div class="card">
+      <h2>📊 學分統計</h2>
+      <div class="summary-dashboard">
+        
+        <div class="stat-card">
+          <div class="card-title">教育基礎課程</div>
+          <div class="card-main"><b id="score-basic">0</b> / 8</div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="card-title">教育方法課程</div>
+          <div class="card-main"><b id="score-method">0</b> / 12</div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="card-title">教育實踐課程</div>
+          <div class="card-main"><b id="score-practice">0</b> / 16</div>
+          <div class="must-badge-container">
+            <span id="badge-實習" class="must-badge missing">教學實習</span>
+            <span id="badge-國語教法" class="must-badge missing">國語教法</span>
+            <span id="badge-數學教法" class="must-badge missing">數學教法</span>
+          </div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="card-title">國民小學師資類科專門課程</div>
+          <div class="card-main"><b id="score-primary">0</b> / 10</div>
+          <div class="must-badge-container">
+            <span id="badge-國音" class="must-badge missing">國音及說話</span>
+            <span id="badge-普數" class="must-badge missing">普通數學</span>
+            <span id="badge-跨領域" class="must-badge missing">跨領域實務</span>
+          </div>
+        </div>
+
+        <div class="stat-card total">
+          <div class="card-title">已選總學分</div>
+          <div class="card-main"><b id="total" style="display:inline;">0</b> / 46</div>
+          <div id="total-status" class="card-sub">目標：符合各項最低標準</div>
+        </div>
+
+        <div class="footer-note">
+          有任何建議指教，歡迎到<a href="https://tellonym.me/ddca.cc/anything" target="_blank">匿名箱</a>留言<br>
+          我們不一定會聽 😻
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
